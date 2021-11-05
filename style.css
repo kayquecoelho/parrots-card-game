@@ -34,24 +34,42 @@ section {
 article {
     width: 117px;
     height: 146px;
-    
-    background-color: #A7E9AF;
-    
-    
-    margin-bottom: 34px;
-    border: 1px solid #99CEA8;
-    border-radius: 5px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 34px;
+
+    position: relative;
 
 }
 article img {
     width: 100px;
     height: 100px;
 }
+.face {
+    width: 100%;
+    height: 100%;
+    background-color: #A7E9AF;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    backface-visibility: hidden;
+    transition: all .5s;
+    transform-style: preserve-3d;
+  }
 
+.back-face {
+    transform: rotateY(180deg);
+  }
+
+.card:hover .back-face {
+    transform: rotateY(0deg);
+  }
+
+.card:hover .front-face {
+    transform: rotateY(-180deg);
+  }
 @media (max-width: 335px) {
     header h1 {
         max-width: 312px;
