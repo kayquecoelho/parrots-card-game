@@ -63,11 +63,11 @@ article img {
     transform: rotateY(180deg);
   }
 
-.card:hover .back-face {
+.card .docinho {
     transform: rotateY(0deg);
   }
 
-.card:hover .front-face {
+.card .leite {
     transform: rotateY(-180deg);
   }
 @media (max-width: 335px) {
