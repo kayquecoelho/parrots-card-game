@@ -4,6 +4,7 @@ let númeroDeCartas;
 let qtdJogadas = 0
 let tempo = 0;
 let id;
+
 function configurações() {
     númeroDeCartas = parseInt(prompt("Com quantas cartas você deseja jogar?", "Digite um número par entre 4 e 14."));
 
@@ -25,7 +26,7 @@ function configurações() {
     let elementosHTML;
     for (let i = 0; i < númeroDeRepetições; i++) {
         for (let j = 0; j < 2; j++) {
-            elementosHTML = `<article class="card" data-identifier="card" onclick="CliqueNaCarta(this)">
+            elementosHTML = `<article class="card" data-identifier="card" onclick="recebeClique(this)">
             <div class="front-face face" data-identifier="front-face" >
             <img src="/assets/front.png" >
             </div>
@@ -45,10 +46,17 @@ function configurações() {
         seção.innerHTML += cardsHTML[i]
     }
 
-    id = setInterval(contarTempo,1000)
+    id = setInterval(contarTempo, 1000)
 
 }
-
+function recebeClique(endereçoClique) {
+    const verificação = endereçoClique.classList.contains("virado")
+    if (!verificação) {
+        if (contadorDeCartasSelecionadas < 2) {
+            CliqueNaCarta(endereçoClique)
+        }
+    }
+}
 function CliqueNaCarta(endereçoClique) {
 
     const verificação = endereçoClique.classList.contains("selecionado")
@@ -63,7 +71,7 @@ function CliqueNaCarta(endereçoClique) {
 
         contadorDeCartasSelecionadas++
         qtdJogadas++
-       
+
     }
 
     if (contadorDeCartasSelecionadas === 2) {
@@ -80,21 +88,21 @@ function compararCartas() {
             cartasSelecionadas[i].classList.remove("selecionado")
             cartasSelecionadas[i].classList.add("virado")
         }
-        
+
         cartasViradas = cartasViradas + 2
         contadorDeCartasSelecionadas = 0
 
     } else {
-        setTimeout(virarCartas,1000)
+        setTimeout(virarCartas, 1000)
     }
-    
-    setTimeout(fimDoJogo,1000)
-    
+
+    setTimeout(fimDoJogo, 1000)
+
 }
 
 function virarCartas() {
     const cartasSelecionadas = document.querySelectorAll(".selecionado")
-    
+
     for (let i = 0; i < cartasSelecionadas.length; i++) {
         const frontFace = document.querySelector(".selecionado .front-face")
         const backFace = document.querySelector(".selecionado .back-face")
@@ -108,7 +116,7 @@ function virarCartas() {
     contadorDeCartasSelecionadas = 0
 
 }
-function fimDoJogo(){
+function fimDoJogo() {
     if (cartasViradas === númeroDeCartas) {
         clearInterval(id)
         alert(`Você ganhou em ${qtdJogadas} jogadas e em ${tempo} segundos!  `)
