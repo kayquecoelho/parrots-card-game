@@ -2,10 +2,12 @@ let contadorDeCartasSelecionadas = 0;
 let cartasViradas = 0;
 let númeroDeCartas;
 let qtdJogadas = 0
+let tempo = 0;
+let id;
 function configurações() {
-    númeroDeCartas = parseInt(prompt("Com quantas cartas você deseja jogar?"));
+    númeroDeCartas = parseInt(prompt("Com quantas cartas você deseja jogar?", "Digite um número par entre 4 e 14."));
 
-    const endereçosDasCartas = ["/assets/explodyparrot.gif",
+    const endereçoDasImagens = ["/assets/explodyparrot.gif",
         "/assets/bobrossparrot.gif",
         "/assets/fiestaparrot.gif",
         "/assets/tripletsparrot.gif",
@@ -28,7 +30,7 @@ function configurações() {
             <img src="/assets/front.png" >
             </div>
             <div class="back-face face" data-identifier="back-face">
-            <img src="${endereçosDasCartas[i]}" >
+            <img src="${endereçoDasImagens[i]}" >
             </div>
             </article>
             `
@@ -43,24 +45,27 @@ function configurações() {
         seção.innerHTML += cardsHTML[i]
     }
 
+    id = setInterval(contarTempo,1000)
+
 }
 
 function CliqueNaCarta(endereçoClique) {
-    console.log (contadorDeCartasSelecionadas)
+
     const verificação = endereçoClique.classList.contains("selecionado")
+
     if (!verificação) {
         endereçoClique.classList.add("selecionado")
-        const frontFace = document.querySelector(".selecionado .front-face")
-        const backFace = document.querySelector(".selecionado .back-face")
+        const frontFace = endereçoClique.querySelector(" .front-face")
+        const backFace = endereçoClique.querySelector(" .back-face")
+
         frontFace.classList.add("face-frente")
         backFace.classList.add("face-costas")
 
-        
         contadorDeCartasSelecionadas++
         qtdJogadas++
-            
        
     }
+
     if (contadorDeCartasSelecionadas === 2) {
         compararCartas()
 
@@ -70,6 +75,7 @@ function compararCartas() {
     const cartasSelecionadas = document.querySelectorAll(".selecionado")
 
     if (cartasSelecionadas[0].innerHTML === cartasSelecionadas[1].innerHTML) {
+
         for (let i = 0; i < cartasSelecionadas.length; i++) {
             cartasSelecionadas[i].classList.remove("selecionado")
             cartasSelecionadas[i].classList.add("virado")
@@ -82,10 +88,8 @@ function compararCartas() {
         setTimeout(virarCartas,1000)
     }
     
-    if (cartasViradas === númeroDeCartas) {
-        alert(`Você ganhou em ${qtdJogadas} jogadas`)
-        
-    }
+    setTimeout(fimDoJogo,1000)
+    
 }
 
 function virarCartas() {
@@ -94,15 +98,39 @@ function virarCartas() {
     for (let i = 0; i < cartasSelecionadas.length; i++) {
         const frontFace = document.querySelector(".selecionado .front-face")
         const backFace = document.querySelector(".selecionado .back-face")
+
         frontFace.classList.remove("face-frente")
         backFace.classList.remove("face-costas")
         cartasSelecionadas[i].classList.remove("selecionado")
 
     }
+
     contadorDeCartasSelecionadas = 0
+
+}
+function fimDoJogo(){
+    if (cartasViradas === númeroDeCartas) {
+        clearInterval(id)
+        alert(`Você ganhou em ${qtdJogadas} jogadas e em ${tempo} segundos!  `)
+        const pergunta = prompt("Você deseja jogar novamente?", "Responda com 'sim' ou 'não'")
+
+        if (pergunta === "sim") {
+            document.location.reload(true)
+        } else {
+            alert("Obrigado por jogar!")
+
+        }
+    }
 }
 
 function comparador() {
     return Math.random() - 0.5;
 }
+
+function contarTempo() {
+    tempo++
+    const contador = document.querySelector(".contador");
+    contador.innerHTML = tempo
+}
+
 configurações()
