@@ -63,13 +63,16 @@ article img {
     transform: rotateY(180deg);
   }
 
-.card .docinho {
+.card .face-costas {
     transform: rotateY(0deg);
   }
 
-.card .leite {
+.card .face-frente {
     transform: rotateY(-180deg);
   }
+.selecionado{font-family: 'Roboto', sans-serif;
+
+}
 @media (max-width: 335px) {
     header h1 {
         max-width: 312px;

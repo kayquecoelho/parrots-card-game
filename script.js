@@ -1,9 +1,9 @@
-let contadorDeCartasViradas = 0;
-let cartasViradas = [];
-let filhosDasCartasViradas = []
-let paresVirados = 0;
+let contadorDeCartasSelecionadas = 0;
+let cartasViradas = 0;
+let númeroDeCartas;
+let qtdJogadas = 0
 function configurações() {
-    let númeroDeCartas = parseInt(prompt("Com quantas cartas você deseja jogar?"));
+    númeroDeCartas = parseInt(prompt("Com quantas cartas você deseja jogar?"));
 
     const endereçosDasCartas = ["/assets/explodyparrot.gif",
         "/assets/bobrossparrot.gif",
@@ -23,11 +23,11 @@ function configurações() {
     let elementosHTML;
     for (let i = 0; i < númeroDeRepetições; i++) {
         for (let j = 0; j < 2; j++) {
-            elementosHTML = `<article class="card" data-identifier="card">
-            <div class="front-face face" data-identifier="back-face" onclick="CliqueNaCarta(this)">
+            elementosHTML = `<article class="card" data-identifier="card" onclick="CliqueNaCarta(this)">
+            <div class="front-face face" data-identifier="front-face" >
             <img src="/assets/front.png" >
             </div>
-            <div class="back-face face" data-identifier="front-face">
+            <div class="back-face face" data-identifier="back-face">
             <img src="${endereçosDasCartas[i]}" >
             </div>
             </article>
@@ -46,57 +46,61 @@ function configurações() {
 }
 
 function CliqueNaCarta(endereçoClique) {
-    const card = endereçoClique.parentNode
-    const filhos = card.children
+    console.log (contadorDeCartasSelecionadas)
+    const verificação = endereçoClique.classList.contains("selecionado")
+    if (!verificação) {
+        endereçoClique.classList.add("selecionado")
+        const frontFace = document.querySelector(".selecionado .front-face")
+        const backFace = document.querySelector(".selecionado .back-face")
+        frontFace.classList.add("face-frente")
+        backFace.classList.add("face-costas")
 
-    if (contadorDeCartasViradas < 2) {
-        cartasViradas.push(card)
-        filhosDasCartasViradas.push(filhos)
-        contadorDeCartasViradas++
-        for (let i = 0; i < filhos.length; i++) {
-            let filho = filhos[i];
-            let verificar = filhos[i].classList.contains("front-face")
-
-            if (verificar) {
-                filhos[i].classList.add("leite")
-            } else {
-                filhos[i].classList.add("docinho")
-            }
-        }
+        
+        contadorDeCartasSelecionadas++
+        qtdJogadas++
+            
+       
     }
+    if (contadorDeCartasSelecionadas === 2) {
+        compararCartas()
 
-    console.log(contadorDeCartasViradas)
-    console.log(cartasViradas)
-    console.log(filhosDasCartasViradas)
-    console.log("oi")
-    compararCartas()
+    }
 }
 function compararCartas() {
-    const carta1 = cartasViradas[0]
-    const carta2 = cartasViradas[1]
+    const cartasSelecionadas = document.querySelectorAll(".selecionado")
 
-    if (carta1.innerHTML === carta2.innerHTML) {
-        console.log("As cartas são iguais!")
-        paresVirados++
-    } else {
-        for (let j = 0; j < filhosDasCartasViradas; j++) {
-            for (let i = 0; i < filhos.length; i++) {
-                let filho = filhos[i];
-                let verificar = filhos[i].classList.contains("front-face")
-
-                if (verificar) {
-                    filhos[i].classList.add("leite")
-                } else {
-                    filhos[i].classList.add("docinho")
-                }
-            }
+    if (cartasSelecionadas[0].innerHTML === cartasSelecionadas[1].innerHTML) {
+        for (let i = 0; i < cartasSelecionadas.length; i++) {
+            cartasSelecionadas[i].classList.remove("selecionado")
+            cartasSelecionadas[i].classList.add("virado")
         }
+        
+        cartasViradas = cartasViradas + 2
+        contadorDeCartasSelecionadas = 0
 
+    } else {
+        setTimeout(virarCartas,1000)
+    }
+    
+    if (cartasViradas === númeroDeCartas) {
+        alert(`Você ganhou em ${qtdJogadas} jogadas`)
+        
     }
 }
 
+function virarCartas() {
+    const cartasSelecionadas = document.querySelectorAll(".selecionado")
+    
+    for (let i = 0; i < cartasSelecionadas.length; i++) {
+        const frontFace = document.querySelector(".selecionado .front-face")
+        const backFace = document.querySelector(".selecionado .back-face")
+        frontFace.classList.remove("face-frente")
+        backFace.classList.remove("face-costas")
+        cartasSelecionadas[i].classList.remove("selecionado")
 
-
+    }
+    contadorDeCartasSelecionadas = 0
+}
 
 function comparador() {
     return Math.random() - 0.5;
