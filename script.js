@@ -120,7 +120,7 @@ function fimDoJogo() {
     if (cartasViradas === númeroDeCartas) {
         clearInterval(id)
         alert(`Você ganhou em ${qtdJogadas} jogadas e em ${tempo} segundos!  `)
-        const pergunta = prompt("Você deseja jogar novamente?", "Responda com 'sim' ou 'não'")
+        const pergunta = prompt("Você deseja jogar novamente?", "sim")
 
         if (pergunta === "sim") {
             document.location.reload(true)
