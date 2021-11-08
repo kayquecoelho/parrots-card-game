@@ -27,10 +27,10 @@ function configurações() {
     for (let i = 0; i < númeroDeRepetições; i++) {
         for (let j = 0; j < 2; j++) {
             elementosHTML = `<article class="card" data-identifier="card" onclick="recebeClique(this)">
-            <div class="front-face face" data-identifier="front-face" >
+            <div class="front-face face" data-identifier="back-face" >
             <img src="/assets/front.png" >
             </div>
-            <div class="back-face face" data-identifier="back-face">
+            <div class="back-face face" data-identifier="front-face">
             <img src="${endereçoDasImagens[i]}" >
             </div>
             </article>
